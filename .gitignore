@@ -1,0 +1,27 @@
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# macOS system files
+.DS_Store
+.Spotlight-V100
+.Trashes
+.fseventsd
+.VolumeIcon.icns
+.AppleDesktop
+.apdisk
+
+# macOS temporary files
+*.swp
+*.lock
+*.tmp
+*.bak
+*.original
+*.old
+
+# macOS Finder
+Icon?
