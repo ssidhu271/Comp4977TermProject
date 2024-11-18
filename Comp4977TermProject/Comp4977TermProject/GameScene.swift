@@ -82,6 +82,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 contact.bodyB.node?.removeFromParent()
             }
         }
+        
+        // Check for Character-Ground collision
+        if (contactA == PhysicsCategory.character && contactB == PhysicsCategory.ground) ||
+           (contactA == PhysicsCategory.ground && contactB == PhysicsCategory.character) {
+            if let character = contact.bodyA.node as? Character ?? contact.bodyB.node as? Character {
+                character.onLand()
+            }
+        }
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

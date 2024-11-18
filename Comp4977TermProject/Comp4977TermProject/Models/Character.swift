@@ -11,15 +11,23 @@ class Character: SKSpriteNode {
 
     // Property to hold animation textures
     private var runTextures: [SKTexture] = []
+    private var jumpTextures: [SKTexture] = []
+    private var canJump = true
     
     init() {
         // Load the texture atlas
         let running = SKTextureAtlas(named: "Char_run")
+        let jumping = SKTextureAtlas(named: "Char_flip")
         
         // Load the running animation frames
         for i in 0...5 { // Assuming 6 frames
             let textureName = "adventurer-run-\(String(format: "%02d", i))"
             runTextures.append(running.textureNamed(textureName))
+        }
+        
+        for i in 0...3 { // Assuming 6 frames
+            let textureName = "adventurer-smrslt-\(String(format: "%02d", i))"
+            jumpTextures.append(jumping.textureNamed(textureName))
         }
         
         // Initialize with the first texture
@@ -54,10 +62,31 @@ class Character: SKSpriteNode {
         self.run(repeatAnimation)
     }
     
-    // Method for jumping
+    // Perform the jump animation
     func jump() {
-        self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 35)) // Adjust jump strength
+        guard canJump else { return } // Prevent jumping if already in the air
+
+        canJump = false // Disable jumping until landing
+
+        // Stop the running animation
+        self.removeAction(forKey: "running")
+        
+        // Apply jump physics
+        self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 30))
+
+        // Play the jump animation
+        let jumpAnimation = SKAction.animate(with: jumpTextures, timePerFrame: 0.15)
+        let completion = SKAction.run { [weak self] in
+            self?.startRunningAnimation() // Restart running animation
+        }
+        let jumpSequence = SKAction.sequence([jumpAnimation, completion])
+        self.run(jumpSequence, withKey: "jumping")
     }
+    
+    func onLand() {
+        canJump = true // Allow jumping again
+    }
+
 }
 
 
