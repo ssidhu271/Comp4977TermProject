@@ -17,9 +17,18 @@ class MainMenuScene: SKScene {
         startButton.text = "Start Game"
         startButton.fontSize = 40
         startButton.fontColor = .white
-        startButton.position = CGPoint(x: frame.midX, y: frame.midY)
+        startButton.position = CGPoint(x: frame.midX, y: frame.midY + 50)
         startButton.name = "startButton" // Assign a name to identify it
         addChild(startButton)
+
+        // Add "High Scores" button
+        let highScoresButton = SKLabelNode(fontNamed: "Arial")
+        highScoresButton.text = "High Scores"
+        highScoresButton.fontSize = 40
+        highScoresButton.fontColor = .white
+        highScoresButton.position = CGPoint(x: frame.midX, y: frame.midY - 50)
+        highScoresButton.name = "highScoresButton" // Assign a name to identify it
+        addChild(highScoresButton)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -33,6 +42,13 @@ class MainMenuScene: SKScene {
             gameScene.scaleMode = .aspectFill
             self.view?.presentScene(gameScene, transition: SKTransition.fade(withDuration: 1.0))
         }
+        // Check if "High Scores" button was tapped
+        else if touchedNode.name == "highScoresButton" {
+            let highScoresScene = HighScoreScene(size: self.size)
+            highScoresScene.scaleMode = .aspectFill
+            self.view?.presentScene(highScoresScene, transition: SKTransition.fade(withDuration: 1.0))
+        }
     }
 }
+
 
