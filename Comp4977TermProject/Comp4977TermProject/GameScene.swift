@@ -29,8 +29,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     private func addCharacter() {
         character = Character()
-        character.position = CGPoint(x: frame.midX / 2, y: ground.size.height + character.size.height / 2)
+        
+        // Adjust the x position near the "X"
+        let xPosition = frame.minX + 40 // Padding from the left
+        // Set the y position to align the bottom of the character with the top of the ground
+        let yPosition = ground.position.y + ground.size.height / 2 + character.size.height / 2
+        
+        character.position = CGPoint(x: xPosition, y: yPosition)
+        
         addChild(character)
+        character.startRunningAnimation()
     }
 
     private func scheduleSpawning() {
@@ -39,7 +47,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             obstacle.position = CGPoint(x: self!.frame.width + obstacle.size.width / 2,
                                         y: self!.ground.size.height + obstacle.size.height / 2)
             self?.addChild(obstacle)
-            obstacle.startMoving(duration: 4.0)
+            obstacle.startMoving(duration: 2.0)
         }
         let obstacleDelay = SKAction.wait(forDuration: 2.0)
         run(SKAction.repeatForever(SKAction.sequence([spawnObstacleAction, obstacleDelay])))
