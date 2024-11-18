@@ -25,3 +25,9 @@
 
 # macOS Finder
 Icon?
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.swp
+*.xcworkspace/xcuserdata
