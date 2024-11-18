@@ -13,22 +13,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         self.backgroundColor = .white
 
-        // Add ground
         ground = Ground(frame: frame)
         addChild(ground)
 
-        // Add character
         addCharacter()
 
-        // Add jump button
         jumpButton = JumpButton()
         addChild(jumpButton)
 
-        // Add score manager
         scoreManager = ScoreManager(frame: frame)
         addChild(scoreManager.getScoreLabel())
 
-        // Schedule spawning
         scheduleSpawning()
     }
 
@@ -86,13 +81,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let location = touch.location(in: self)
         let touchedNode = atPoint(location)
 
-        if isGameOver {
-            if touchedNode.name == "restartButton" {
-                let newScene = GameScene(size: size)
-                newScene.scaleMode = .aspectFill
-                view?.presentScene(newScene, transition: .fade(withDuration: 1.0))
-            }
-        } else if touchedNode.name == "jumpButton" {
+        if !isGameOver, touchedNode.name == "jumpButton" {
             character.jump()
         }
     }
@@ -100,19 +89,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func gameOver() {
         isGameOver = true
 
-        let gameOverLabel = SKLabelNode(fontNamed: "Arial")
-        gameOverLabel.text = "Game Over"
-        gameOverLabel.fontSize = 50
-        gameOverLabel.fontColor = .red
-        gameOverLabel.position = CGPoint(x: frame.midX, y: frame.midY + 50)
-        addChild(gameOverLabel)
-
-        let restartButton = SKLabelNode(fontNamed: "Arial")
-        restartButton.text = "Restart"
-        restartButton.fontSize = 40
-        restartButton.fontColor = .blue
-        restartButton.position = CGPoint(x: frame.midX, y: frame.midY - 50)
-        restartButton.name = "restartButton"
-        addChild(restartButton)
+        // Transition to GameOverScene with the final score
+        let gameOverScene = GameOverScene(size: self.size, finalScore: scoreManager.getScore())
+        gameOverScene.scaleMode = .aspectFill
+        self.view?.presentScene(gameOverScene, transition: SKTransition.fade(withDuration: 1.0))
     }
 }

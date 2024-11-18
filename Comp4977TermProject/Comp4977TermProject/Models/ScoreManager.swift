@@ -27,6 +27,11 @@ class ScoreManager {
         score += 1
         scoreLabel.text = "Score: \(score)"
     }
+
+    func getScore() -> Int {
+        return score
+    }
 }
+
 
 
