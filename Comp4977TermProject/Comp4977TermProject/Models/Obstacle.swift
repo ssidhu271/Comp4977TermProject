@@ -9,7 +9,7 @@ import SpriteKit
 
 class Obstacle: SKSpriteNode {
     init() {
-        let size = CGSize(width: 50, height: 50)
+        let size = CGSize(width: 30, height: 30)
         super.init(texture: nil, color: .red, size: size) // Use an obstacle texture if available
         self.name = "obstacle"
         
