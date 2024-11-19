@@ -12,6 +12,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
 
         self.backgroundColor = .white
+        
+        // Enable hitbox debugging
+        if let skView = self.view {
+            skView.showsPhysics = true
+        }
 
         ground = Ground(frame: frame)
         addChild(ground)
@@ -45,9 +50,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let spawnObstacleAction = SKAction.run { [weak self] in
             let obstacle = Obstacle()
             obstacle.position = CGPoint(x: self!.frame.width + obstacle.size.width / 2,
-                                        y: self!.ground.size.height + obstacle.size.height / 2)
+                                        y: self!.ground.size.height + (obstacle.size.height/2) - 25)
             self?.addChild(obstacle)
-            obstacle.startMoving(duration: 2.0)
+            obstacle.startMoving(duration: 3.0)
         }
         let obstacleDelay = SKAction.wait(forDuration: 2.0)
         run(SKAction.repeatForever(SKAction.sequence([spawnObstacleAction, obstacleDelay])))

@@ -42,7 +42,7 @@ class Character: SKSpriteNode {
         self.name = "character"
         
         // Configure the physics body
-        self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: size.width * 0.8, height: size.height * 0.8), center: CGPoint(x: 0, y: -size.height * 0.1))
+        self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: size.width * 0.5, height: size.height * 0.8), center: CGPoint(x: 0, y: -size.height * 0.1))
         self.physicsBody?.affectedByGravity = true
         self.physicsBody?.isDynamic = true
         self.physicsBody?.allowsRotation = false
@@ -72,10 +72,10 @@ class Character: SKSpriteNode {
         self.removeAction(forKey: "running")
         
         // Apply jump physics
-        self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 30))
+        self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20))
 
         // Play the jump animation
-        let jumpAnimation = SKAction.animate(with: jumpTextures, timePerFrame: 0.15)
+        let jumpAnimation = SKAction.animate(with: jumpTextures, timePerFrame: 0.16)
         let completion = SKAction.run { [weak self] in
             self?.startRunningAnimation() // Restart running animation
         }
