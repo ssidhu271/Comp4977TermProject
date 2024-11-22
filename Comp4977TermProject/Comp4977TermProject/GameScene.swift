@@ -59,7 +59,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yPosition = ground.position.y + ground.size.height / 2 + character.size.height / 2
         character.position = CGPoint(x: xPosition, y: yPosition)
         addChild(character)
-        character.startWalkingAnimation()
+        character.startRunningAnimation()
     }
 
     private func createRandomObstacle() -> SKSpriteNode {
