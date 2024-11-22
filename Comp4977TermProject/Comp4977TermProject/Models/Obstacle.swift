@@ -31,6 +31,8 @@ class Obstacle: SKSpriteNode {
         // Flip the sprite to face left
         self.xScale = -2.0 // Horizontal flip while maintaining scale
         
+        self.zPosition = 15
+        
         // Physics Body
         // Set a smaller, more accurate physics body
         let hitboxSize = CGSize(width: self.size.width * 0.3, height: self.size.height * 0.5) // Scale down the hitbox
