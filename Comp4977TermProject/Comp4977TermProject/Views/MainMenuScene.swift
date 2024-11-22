@@ -38,7 +38,7 @@ class MainMenuScene: SKScene {
 
         // Check if "Start Game" button was tapped
         if touchedNode.name == "startButton" {
-            let gameScene = GameBackground(size: self.size)
+            let gameScene = GameScene(size: self.size)
             gameScene.scaleMode = .aspectFill
             self.view?.presentScene(gameScene, transition: SKTransition.fade(withDuration: 1.0))
         }

@@ -4,15 +4,20 @@
 //
 //  Created by Parin Ravanbakhsh on 2024-11-19.
 //
-
 import SpriteKit
 
-class GameBackground: SKScene {
+class GameBackground: SKNode {
+    override init() {
+        super.init()
+        // Initialize background layers
+        initializeLayers()
+    }
     
-    override func didMove(to view: SKView) {
-        // Set the background color (optional, for any gaps or testing)
-        self.backgroundColor = .blue
-        
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func initializeLayers() {
         // Add each layer as a sprite node
         addBackgroundLayer(named: "Layer_0011_0", zPosition: 0) // Bottommost layer
         addBackgroundLayer(named: "Layer_0010_1", zPosition: 1)
@@ -25,17 +30,17 @@ class GameBackground: SKScene {
         addBackgroundLayer(named: "Layer_0003_6", zPosition: 8)
         addBackgroundLayer(named: "Layer_0002_7", zPosition: 9) // Topmost layer
     }
-    
-    func addBackgroundLayer(named imageName: String, zPosition: CGFloat) {
+
+    private func addBackgroundLayer(named imageName: String, zPosition: CGFloat) {
         // Create a sprite node with the image
         let layerNode = SKSpriteNode(imageNamed: imageName)
         
         // Set the size of the node to match the screen size
-        layerNode.size = self.size
-        layerNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+        layerNode.size = UIScreen.main.bounds.size // Adjust size for screen dimensions
+        layerNode.position = CGPoint(x: layerNode.size.width / 2, y: layerNode.size.height / 2)
         layerNode.zPosition = zPosition
         
-        // Add the node to the scene
+        // Add the node to the background
         self.addChild(layerNode)
     }
 }
