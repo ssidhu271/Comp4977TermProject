@@ -21,7 +21,7 @@ class GameOverScene: SKScene {
     }
 
     override func didMove(to view: SKView) {
-        self.backgroundColor = .black
+        addGameBackground()
 
         // Add UI elements closer to the center of the screen
         addGameOverLabel()
@@ -54,6 +54,7 @@ class GameOverScene: SKScene {
         gameOverLabel.fontSize = 50
         gameOverLabel.fontColor = .red
         gameOverLabel.position = CGPoint(x: frame.midX, y: frame.midY + 100)
+        gameOverLabel.zPosition = 10
         addChild(gameOverLabel)
     }
 
@@ -63,6 +64,7 @@ class GameOverScene: SKScene {
         finalScoreLabel.fontSize = 30
         finalScoreLabel.fontColor = .white
         finalScoreLabel.position = CGPoint(x: frame.midX, y: frame.midY + 50)
+        finalScoreLabel.zPosition = 10
         addChild(finalScoreLabel)
     }
 
@@ -72,6 +74,7 @@ class GameOverScene: SKScene {
         nameLabel.fontSize = 25
         nameLabel.fontColor = .white
         nameLabel.position = CGPoint(x: frame.midX, y: frame.midY)
+        nameLabel.zPosition = 10
         nameLabel.name = "nameLabel" // Add a name for identification
         addChild(nameLabel)
     }
@@ -79,6 +82,7 @@ class GameOverScene: SKScene {
     private func addNameInputField(to view: SKView) {
         // Create and configure the UITextField
         nameTextField = UITextField(frame: CGRect(x: view.frame.midX - 100, y: view.frame.midY + 20, width: 200, height: 40))
+        nameTextField?.layer.zPosition = 10
         nameTextField?.placeholder = "Your Name"
         nameTextField?.borderStyle = .roundedRect
         nameTextField?.textAlignment = .center
@@ -95,6 +99,7 @@ class GameOverScene: SKScene {
         restartButton.fontSize = 30
         restartButton.fontColor = .green
         restartButton.position = CGPoint(x: frame.midX, y: frame.midY + offset)
+        restartButton.zPosition = 10
         restartButton.name = "restartButton"
         addChild(restartButton)
 
@@ -104,8 +109,16 @@ class GameOverScene: SKScene {
         mainMenuButton.fontSize = 30
         mainMenuButton.fontColor = .blue
         mainMenuButton.position = CGPoint(x: frame.midX, y: frame.midY + offset - 50)
+        mainMenuButton.zPosition = 10
         mainMenuButton.name = "mainMenuButton"
         addChild(mainMenuButton)
+    }
+    
+    private func addGameBackground() {
+        let background = GameBackground()
+        background.position = CGPoint.zero // Align with the screen
+        background.zPosition = -1 // Ensure it's behind everything else
+        addChild(background)
     }
 
     // MARK: - Scoring Logic
@@ -147,15 +160,15 @@ class GameOverScene: SKScene {
         let location = touch.location(in: self)
         let touchedNode = atPoint(location)
 
-        nameTextField?.removeFromSuperview()
-
         if touchedNode.name == "restartButton" {
             saveHighScoreIfNeeded()
+            nameTextField?.removeFromSuperview()
             let gameScene = GameScene(size: self.size)
             gameScene.scaleMode = .aspectFill
             self.view?.presentScene(gameScene, transition: SKTransition.fade(withDuration: 1.0))
         } else if touchedNode.name == "mainMenuButton" {
             saveHighScoreIfNeeded()
+            nameTextField?.removeFromSuperview()
             let mainMenuScene = MainMenuScene(size: self.size)
             mainMenuScene.scaleMode = .aspectFill
             self.view?.presentScene(mainMenuScene, transition: SKTransition.fade(withDuration: 1.0))

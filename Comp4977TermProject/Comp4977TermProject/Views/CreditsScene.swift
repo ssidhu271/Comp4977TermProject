@@ -11,8 +11,7 @@ class CreditsScene: SKScene {
     private let blackBoxHeightRatio: CGFloat = 0.65 // Black box height ratio
 
     override func didMove(to view: SKView) {
-        // Set background color
-        self.backgroundColor = .blue
+        addGameBackground()
 
         // Add a rounded, faded black background box
         let blackBoxHeight = frame.height * blackBoxHeightRatio
@@ -20,6 +19,7 @@ class CreditsScene: SKScene {
         fadedBackground.fillColor = UIColor.black.withAlphaComponent(0.5)
         fadedBackground.strokeColor = .clear
         fadedBackground.position = CGPoint(x: frame.midX, y: frame.midY)
+        fadedBackground.zPosition = 10
         addChild(fadedBackground)
 
         // Add title
@@ -28,6 +28,7 @@ class CreditsScene: SKScene {
         titleLabel.fontSize = 60
         titleLabel.fontColor = .yellow
         titleLabel.position = CGPoint(x: frame.midX, y: frame.height * 0.85)
+        titleLabel.zPosition = 10
         addChild(titleLabel)
 
         // Credits content
@@ -49,6 +50,7 @@ class CreditsScene: SKScene {
         gameDesignLabel.fontSize = 20
         gameDesignLabel.fontColor = .white
         gameDesignLabel.position = CGPoint(x: columnLeftX, y: currentY)
+        gameDesignLabel.zPosition = 10
         addChild(gameDesignLabel)
 
         let gameLogicLabel = SKLabelNode(fontNamed: "Arial-BoldMT")
@@ -56,6 +58,7 @@ class CreditsScene: SKScene {
         gameLogicLabel.fontSize = 20
         gameLogicLabel.fontColor = .white
         gameLogicLabel.position = CGPoint(x: columnRightX, y: currentY)
+        gameLogicLabel.zPosition = 10
         addChild(gameLogicLabel)
 
         currentY -= 30 // Move down for the names
@@ -67,6 +70,7 @@ class CreditsScene: SKScene {
             nameLabel.fontSize = 15
             nameLabel.fontColor = .white
             nameLabel.position = CGPoint(x: columnLeftX, y: currentY - CGFloat(index * 20))
+            nameLabel.zPosition = 10
             addChild(nameLabel)
         }
 
@@ -77,6 +81,7 @@ class CreditsScene: SKScene {
             nameLabel.fontSize = 15
             nameLabel.fontColor = .white
             nameLabel.position = CGPoint(x: columnRightX, y: currentY - CGFloat(index * 20))
+            nameLabel.zPosition = 10
             addChild(nameLabel)
         }
 
@@ -89,6 +94,7 @@ class CreditsScene: SKScene {
         graphicsLabel.fontSize = 20
         graphicsLabel.fontColor = .white
         graphicsLabel.position = CGPoint(x: fadedBackground.position.x, y: currentY)
+        graphicsLabel.zPosition = 10
         addChild(graphicsLabel)
 
         currentY -= 30 // Move down for the names
@@ -99,6 +105,7 @@ class CreditsScene: SKScene {
             nameLabel.fontSize = 15
             nameLabel.fontColor = .white
             nameLabel.position = CGPoint(x: fadedBackground.position.x, y: currentY - CGFloat(index * 20))
+            nameLabel.zPosition = 10
             addChild(nameLabel)
         }
 
@@ -108,6 +115,7 @@ class CreditsScene: SKScene {
         backButton.fontSize = 25
         backButton.fontColor = .white
         backButton.position = CGPoint(x: frame.midX, y: frame.height * 0.1)
+        backButton.zPosition = 10
         backButton.name = "backButton"
         addChild(backButton)
     }
@@ -123,5 +131,12 @@ class CreditsScene: SKScene {
             mainMenuScene.scaleMode = .aspectFill
             self.view?.presentScene(mainMenuScene, transition: SKTransition.fade(withDuration: 1.0))
         }
+    }
+    
+    private func addGameBackground() {
+        let background = GameBackground()
+        background.position = CGPoint.zero // Align with the screen
+        background.zPosition = -1 // Ensure it's behind everything else
+        addChild(background)
     }
 }

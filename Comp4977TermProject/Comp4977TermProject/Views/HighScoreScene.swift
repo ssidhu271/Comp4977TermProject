@@ -11,8 +11,8 @@ class HighScoreScene: SKScene {
     private let blackBoxHeightRatio: CGFloat = 0.6 // Black box height ratio
 
     override func didMove(to view: SKView) {
-        // Set background color
-        self.backgroundColor = .blue
+        // Add the layered game background
+        addGameBackground()
 
         // Add a rounded black box to display high scores
         let blackBoxHeight = frame.height * blackBoxHeightRatio
@@ -20,6 +20,7 @@ class HighScoreScene: SKScene {
         fadedBackground.fillColor = UIColor.black.withAlphaComponent(0.5)
         fadedBackground.strokeColor = .clear
         fadedBackground.position = CGPoint(x: frame.midX, y: frame.midY)
+        fadedBackground.zPosition = 10
         addChild(fadedBackground)
 
         // Add title label (outside the black box)
@@ -28,6 +29,7 @@ class HighScoreScene: SKScene {
         titleLabel.fontSize = 60
         titleLabel.fontColor = .yellow
         titleLabel.position = CGPoint(x: frame.midX, y: frame.height * 0.85)
+        titleLabel.zPosition = 10
         addChild(titleLabel)
 
         // Fetch and display high scores inside the black box
@@ -43,6 +45,7 @@ class HighScoreScene: SKScene {
             scoreLabel.fontSize = 30
             scoreLabel.fontColor = .white
             scoreLabel.position = CGPoint(x: fadedBackground.position.x, y: currentY)
+            scoreLabel.zPosition = 10
             addChild(scoreLabel)
             currentY -= spacing // Move down for the next score
         }
@@ -53,6 +56,7 @@ class HighScoreScene: SKScene {
         backButton.fontSize = 25
         backButton.fontColor = .white
         backButton.position = CGPoint(x: frame.midX, y: frame.height * 0.1)
+        backButton.zPosition = 10
         backButton.name = "backButton"
         addChild(backButton)
     }
@@ -67,5 +71,12 @@ class HighScoreScene: SKScene {
             mainMenu.scaleMode = .aspectFill
             self.view?.presentScene(mainMenu, transition: SKTransition.fade(withDuration: 1.0))
         }
+    }
+    
+    private func addGameBackground() {
+        let background = GameBackground()
+        background.position = CGPoint.zero // Align with the screen
+        background.zPosition = -1 // Ensure it's behind everything else
+        addChild(background)
     }
 }
