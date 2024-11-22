@@ -11,31 +11,26 @@ class Character: SKSpriteNode {
 
     // Property to hold animation textures
     private var runTextures: [SKTexture] = []
-    private var jumpTextures: [SKTexture] = []
     private var canJump = true
     
     init() {
         // Load the texture atlas
-        let running = SKTextureAtlas(named: "Char_run")
-        let jumping = SKTextureAtlas(named: "Char_flip")
-        
+        let running = SKTextureAtlas(named: "Sprites")
+    
         // Load the running animation frames
-        for i in 0...5 { // Assuming 6 frames
-            let textureName = "adventurer-run-\(String(format: "%02d", i))"
+        for i in 1...8 {
+            let textureName = "tile_\(i)"
+            print(textureName, "tile_\(i)")
             runTextures.append(running.textureNamed(textureName))
         }
-        
-        for i in 0...3 { // Assuming 6 frames
-            let textureName = "adventurer-smrslt-\(String(format: "%02d", i))"
-            jumpTextures.append(jumping.textureNamed(textureName))
-        }
-        
+           
         // Initialize with the first texture
         let initialTexture = runTextures[0]
         let size = initialTexture.size() // Adjust size to match the sprite
         
         super.init(texture: initialTexture, color: .clear, size: size)
         
+        self.zPosition = 20
         self.xScale = 2.0 // Double the width
         self.yScale = 2.0 // Double the height
         
@@ -68,19 +63,16 @@ class Character: SKSpriteNode {
 
         canJump = false // Disable jumping until landing
 
-        // Stop the running animation
-        self.removeAction(forKey: "running")
-        
         // Apply jump physics
-        self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20))
+        self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 10))
 
         // Play the jump animation
-        let jumpAnimation = SKAction.animate(with: jumpTextures, timePerFrame: 0.16)
+        let jumpAnimation = SKAction.animate(with: runTextures, timePerFrame: 0.16)
         let completion = SKAction.run { [weak self] in
             self?.startRunningAnimation() // Restart running animation
         }
         let jumpSequence = SKAction.sequence([jumpAnimation, completion])
-        self.run(jumpSequence, withKey: "jumping")
+        self.run(jumpSequence, withKey: "walking")
     }
     
     func onLand() {
@@ -88,5 +80,4 @@ class Character: SKSpriteNode {
     }
 
 }
-
 
