@@ -9,43 +9,17 @@ import SpriteKit
 
 class MainMenuScene: SKScene {
     override func didMove(to view: SKView) {
-        // Set background color
-        self.backgroundColor = .blue
+        // Add the layered game background
+        addGameBackground()
         
-        // Add title at the top
-        let titleLabel = SKLabelNode(fontNamed: "Arial")
-        titleLabel.text = "Forest Runner"
-        titleLabel.fontSize = 60
-        titleLabel.fontColor = .yellow
-        titleLabel.position = CGPoint(x: frame.midX, y: frame.height * 0.6)
-        addChild(titleLabel)
+        // Add stylized title at the top
+        addStylizedTitle()
         
-        // Add "Start Game" button
-        let startButton = SKLabelNode(fontNamed: "Arial")
-        startButton.text = "Start Game"
-        startButton.fontSize = 30
-        startButton.fontColor = .white
-        startButton.position = CGPoint(x: frame.midX, y: frame.midY - 50)
-        startButton.name = "startButton" // Assign a name to identify it
-        addChild(startButton)
+        // Add buttons
+        addButton(text: "Start Game", position: CGPoint(x: frame.midX, y: frame.midY - 50), name: "startButton")
+        addButton(text: "High Scores", position: CGPoint(x: frame.midX, y: frame.midY - 100), name: "highScoresButton")
+        addButton(text: "Credits", position: CGPoint(x: frame.midX, y: frame.midY - 150), name: "creditsButton")
         
-        // Add "High Scores" button
-        let highScoresButton = SKLabelNode(fontNamed: "Arial")
-        highScoresButton.text = "High Scores"
-        highScoresButton.fontSize = 30
-        highScoresButton.fontColor = .white
-        highScoresButton.position = CGPoint(x: frame.midX, y: frame.midY - 100)
-        highScoresButton.name = "highScoresButton" // Assign a name to identify it
-        addChild(highScoresButton)
-        
-        // Add "Credits" button
-                let creditsButton = SKLabelNode(fontNamed: "Arial")
-                creditsButton.text = "Credits"
-                creditsButton.fontSize = 30
-                creditsButton.fontColor = .white
-                creditsButton.position = CGPoint(x: frame.midX, y: frame.midY - 150)
-                creditsButton.name = "creditsButton" // Assign a name to identify it
-                addChild(creditsButton)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -71,6 +45,53 @@ class MainMenuScene: SKScene {
             creditsScene.scaleMode = .aspectFill
             self.view?.presentScene(creditsScene, transition: SKTransition.fade(withDuration: 1.0))
         }
+    }
+    
+    private func addGameBackground() {
+        let background = GameBackground()
+        background.position = CGPoint.zero // Align with the screen
+        background.zPosition = -1 // Ensure it's behind everything else
+        addChild(background)
+    }
+    
+    private func addStylizedTitle() {
+        // Create a shadow effect for the title
+        let shadowLabel = SKLabelNode(fontNamed: "Papyrus")
+        shadowLabel.text = "Forest Runner"
+        shadowLabel.fontSize = 80
+        shadowLabel.fontColor = UIColor.black.withAlphaComponent(0.7)
+        shadowLabel.position = CGPoint(x: frame.midX + 5, y: frame.height * 0.65 - 5) // Offset slightly for shadow
+        shadowLabel.zPosition = 9
+        addChild(shadowLabel)
+        
+        // Main title
+        let titleLabel = SKLabelNode(fontNamed: "Papyrus")
+        titleLabel.text = "Forest Runner"
+        titleLabel.fontSize = 80
+        titleLabel.fontColor = UIColor(red: 0.8, green: 0.9, blue: 0.6, alpha: 1.0) // Light green color for forest vibes
+        titleLabel.position = CGPoint(x: frame.midX, y: frame.height * 0.65)
+        titleLabel.zPosition = 10
+        addChild(titleLabel)
+    }
+    
+    private func addButton(text: String, position: CGPoint, name: String) {
+        // Button background with a wooden texture
+        let buttonBackground = SKSpriteNode(imageNamed: "wood")
+        buttonBackground.size = CGSize(width: 225, height: 45)
+        buttonBackground.position = position
+        buttonBackground.zPosition = 9
+        buttonBackground.name = name // Assign a name for interaction
+        addChild(buttonBackground)
+        
+        // Button text
+        let buttonLabel = SKLabelNode(fontNamed: "Papyrus") // Rustic-themed font
+        buttonLabel.text = text
+        buttonLabel.fontSize = 25
+        buttonLabel.fontColor = UIColor(red: 0.9, green: 0.8, blue: 0.7, alpha: 1.0) // Beige color for a natural look
+        buttonLabel.position = CGPoint(x: 0, y: -10) // Center the text on the button
+        buttonLabel.zPosition = 10
+        buttonLabel.name = name // Assign same name for touch handling
+        buttonBackground.addChild(buttonLabel)
     }
 }
 
