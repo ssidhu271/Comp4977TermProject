@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "jump_button.png",
+      "filename" : "Home-Hover.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "jump_button 1.png",
+      "filename" : "Home-Hover 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "jump_button 2.png",
+      "filename" : "Home-Hover 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -9,9 +9,11 @@ import SpriteKit
 
 class JumpButton: SKSpriteNode {
     init() {
-        super.init(texture: nil, color: .blue, size: CGSize(width: 100, height: 50))
+        //load the jump button
+        let buttonTexture = SKTexture(imageNamed: "jump_button")
+        super.init(texture: buttonTexture, color: .clear, size: CGSize(width: 50, height: 50))
         self.name = "jumpButton"
-        self.position = CGPoint(x: UIScreen.main.bounds.midX, y: 200)
+        self.zPosition =  15
     }
 
     required init?(coder aDecoder: NSCoder) {
