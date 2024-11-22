@@ -51,24 +51,26 @@ class GameOverScene: SKScene {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else { return }
-        let location = touch.location(in: self)
-        let touchedNode = atPoint(location)
+            guard let touch = touches.first else { return }
+            let location = touch.location(in: self)
+            let touchedNode = atPoint(location)
 
-        nameTextField?.removeFromSuperview()
-
-        if touchedNode.name == "restartButton" {
-            saveHighScoreIfNeeded()
-            let gameScene = GameScene(size: self.size)
-            gameScene.scaleMode = .aspectFill
-            self.view?.presentScene(gameScene, transition: SKTransition.fade(withDuration: 1.0))
-        } else if touchedNode.name == "mainMenuButton" {
-            saveHighScoreIfNeeded()
-            let mainMenuScene = MainMenuScene(size: self.size)
-            mainMenuScene.scaleMode = .aspectFill
-            self.view?.presentScene(mainMenuScene, transition: SKTransition.fade(withDuration: 1.0))
+            if touchedNode.name == "restartButton" {
+                saveHighScoreIfNeeded()
+                transitionToScene(GameScene(size: self.size))
+            } else if touchedNode.name == "mainMenuButton" {
+                saveHighScoreIfNeeded()
+                transitionToScene(MainMenuScene(size: self.size))
+            }
         }
-    }
+
+private func transitionToScene(_ scene: SKScene) {
+            // Remove the text field before transitioning to a new scene
+            nameTextField?.removeFromSuperview()
+            nameTextField = nil // Release memory
+            scene.scaleMode = .aspectFill
+            self.view?.presentScene(scene, transition: SKTransition.fade(withDuration: 1.0))
+        }
 
 
     private func saveHighScoreIfNeeded() {
