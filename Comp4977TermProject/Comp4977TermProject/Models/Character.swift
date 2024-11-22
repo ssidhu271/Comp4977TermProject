@@ -20,7 +20,6 @@ class Character: SKSpriteNode {
         // Load the running animation frames
         for i in 1...8 {
             let textureName = "tile_\(i)"
-            print(textureName, "tile_\(i)")
             runTextures.append(running.textureNamed(textureName))
         }
            
