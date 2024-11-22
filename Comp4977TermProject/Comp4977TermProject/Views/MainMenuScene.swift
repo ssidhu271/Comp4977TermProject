@@ -47,25 +47,6 @@ class MainMenuScene: SKScene {
         }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else { return }
-        let location = touch.location(in: self)
-        
-        for child in children {
-            if let button = child as? SKSpriteNode,
-               button.name == "startButton" || button.name == "highScoresButton" || button.name == "creditsButton" {
-                if let label = button.children.first as? SKLabelNode {
-                    if button.contains(location) {
-                        label.fontColor = .yellow
-                    } else {
-                        label.fontColor = UIColor(red: 0.9, green: 0.8, blue: 0.7, alpha: 1.0)
-                    }
-                }
-            }
-        }
-    }
-
-    
     private func addGameBackground() {
         let background = GameBackground()
         background.position = CGPoint.zero // Align with the screen
@@ -94,24 +75,24 @@ class MainMenuScene: SKScene {
     }
     
     private func addButton(text: String, position: CGPoint, name: String) {
-            // Button background with a wooden texture
-            let buttonBackground = SKSpriteNode(imageNamed: "wood")
-            buttonBackground.size = CGSize(width: 225, height: 45)
-            buttonBackground.position = position
-            buttonBackground.zPosition = 9
-            buttonBackground.name = name // Assign a name for interaction
-            addChild(buttonBackground)
-            
-            // Button text
-            let buttonLabel = SKLabelNode(fontNamed: "Papyrus") // Rustic-themed font
-            buttonLabel.text = text
-            buttonLabel.fontSize = 25
-            buttonLabel.fontColor = UIColor(red: 0.9, green: 0.8, blue: 0.7, alpha: 1.0) // Beige color for a natural look
-            buttonLabel.position = CGPoint(x: 0, y: -10) // Center the text on the button
-            buttonLabel.zPosition = 10
-            buttonLabel.name = name // Assign same name for touch handling
-            buttonBackground.addChild(buttonLabel)
-        }
+        // Button background with a wooden texture
+        let buttonBackground = SKSpriteNode(imageNamed: "wood")
+        buttonBackground.size = CGSize(width: 225, height: 45)
+        buttonBackground.position = position
+        buttonBackground.zPosition = 9
+        buttonBackground.name = name // Assign a name for interaction
+        addChild(buttonBackground)
+        
+        // Button text
+        let buttonLabel = SKLabelNode(fontNamed: "Papyrus") // Rustic-themed font
+        buttonLabel.text = text
+        buttonLabel.fontSize = 25
+        buttonLabel.fontColor = UIColor(red: 0.9, green: 0.8, blue: 0.7, alpha: 1.0) // Beige color for a natural look
+        buttonLabel.position = CGPoint(x: 0, y: -10) // Center the text on the button
+        buttonLabel.zPosition = 10
+        buttonLabel.name = name // Assign same name for touch handling
+        buttonBackground.addChild(buttonLabel)
+    }
 }
 
 

@@ -3,7 +3,6 @@ import SpriteKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     private var character: Character!
     private var ground: Ground!
-    private var jumpButton: JumpButton!
     private var scoreManager: ScoreManager!
     private var isGameOver = false
 
@@ -28,13 +27,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         // Add the character
         addCharacter()
-
-        // Add the jump button
-        jumpButton = JumpButton()
-        jumpButton.position = CGPoint(x: frame.midX, y: frame.minY + 250)
-        jumpButton.zPosition = 15
-        jumpButton.name = "jumpButton" // Make it interactable
-        addChild(jumpButton)
 
         // Add the score label
         scoreManager = ScoreManager(frame: frame)
@@ -145,13 +137,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else { return }
-        let location = touch.location(in: self)
-        let touchedNode = atPoint(location)
-
-        if !isGameOver, touchedNode.name == "jumpButton" {
-            character.jump()
+        guard !isGameOver else {
+            return
         }
+        character.jump()
     }
 
     private func gameOver() {

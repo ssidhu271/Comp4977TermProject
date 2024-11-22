@@ -20,7 +20,7 @@ class Obstacle2: SKSpriteNode {
         super.init(texture: initialTexture, color: .clear, size: size)
         self.name = "obstacle2"
         
-        self.xScale = 2 // Adjust to make the obstacle wider (default is 1.0)
+        self.xScale = -2 // Adjust to make the obstacle wider (default is 1.0)
         self.yScale = 2 // Adjust to make the obstacle taller (default is 1.0)
      
         
