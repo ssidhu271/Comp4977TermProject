@@ -10,7 +10,7 @@ import SpriteKit
 class Ground: SKSpriteNode {
     init(frame: CGRect) {
         let size = CGSize(width: frame.width, height: 50)
-        super.init(texture: nil, color: .brown, size: size)
+        super.init(texture: nil, color: .black, size: size)
         self.name = "ground"
         self.position = CGPoint(x: frame.midX, y: size.height / 2)
         

@@ -27,6 +27,8 @@ class Coin: SKSpriteNode {
         super.init(texture: coinTextures[0], color: .clear, size: frameSize)
         self.name = "coin"
         
+        self.zPosition = 18
+
         self.xScale = 1.5
         self.yScale = 1.5
         
