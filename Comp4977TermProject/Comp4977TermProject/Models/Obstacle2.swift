@@ -26,7 +26,7 @@ class Obstacle2: SKSpriteNode {
         
         self.zPosition = 18
 
-        self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
+        self.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: size.width * 0.5, height: size.height * 0.8), center: CGPoint(x: 0, y: -size.height * 0.1))
         self.physicsBody?.isDynamic = false
         self.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
         self.physicsBody?.contactTestBitMask = PhysicsCategory.character
