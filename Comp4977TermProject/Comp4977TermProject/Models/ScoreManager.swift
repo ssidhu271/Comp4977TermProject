@@ -12,11 +12,12 @@ class ScoreManager {
     private let scoreLabel: SKLabelNode
 
     init(frame: CGRect) {
-        scoreLabel = SKLabelNode(fontNamed: "Arial")
+        scoreLabel = SKLabelNode(fontNamed: "Papyrus")
         scoreLabel.text = "Score: \(score)"
         scoreLabel.fontSize = 30
-        scoreLabel.fontColor = .black
+        scoreLabel.fontColor = UIColor(red: 0.02, green: 0.15, blue: 0.02, alpha: 1.0)
         scoreLabel.position = CGPoint(x: frame.midX, y: frame.height - 50)
+        scoreLabel.zPosition = 300
     }
 
     func getScoreLabel() -> SKLabelNode {

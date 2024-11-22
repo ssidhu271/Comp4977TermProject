@@ -33,7 +33,7 @@ class Coin: SKSpriteNode {
         self.yScale = 1.5
         
         // Set up the physics body
-        self.physicsBody = SKPhysicsBody(circleOfRadius: frameSize.width / 2)
+        self.physicsBody = SKPhysicsBody(circleOfRadius: frameSize.width)
         self.physicsBody?.isDynamic = false
         self.physicsBody?.categoryBitMask = PhysicsCategory.coin
         self.physicsBody?.contactTestBitMask = PhysicsCategory.character
