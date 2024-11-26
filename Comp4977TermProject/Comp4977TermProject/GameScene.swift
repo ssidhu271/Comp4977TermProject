@@ -141,24 +141,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
 
-    
-
-
-
         
+        func randomCoinDelay() -> TimeInterval {
+            return TimeInterval.random(in: 1.0...6.0) // Random delay
+        }
 
-        // Spawn coins (unchanged)
         let spawnCoinAction = SKAction.run { [weak self] in
+            guard let self = self else { return }
+            
             let coin = Coin()
             coin.position = CGPoint(
-                x: self!.frame.width + coin.size.width / 2,
-                y: self!.ground.size.height + coin.size.height + 60
+                x: self.frame.width + coin.size.width / 2,
+                y: self.ground.size.height + coin.size.height + 60
             )
-            self?.addChild(coin)
+            self.addChild(coin)
             coin.startMoving(duration: 4.0)
         }
-        let coinDelay = SKAction.wait(forDuration: 3.0)
-        run(SKAction.repeatForever(SKAction.sequence([spawnCoinAction, coinDelay])))
+
+        // Recursive function for random coin spawning
+        func startSpawningCoins() {
+            let randomDelay = randomCoinDelay()
+            let coinSequence = SKAction.sequence([
+                spawnCoinAction,
+                SKAction.wait(forDuration: randomDelay) // Wait for a random delay
+            ])
+            self.run(SKAction.sequence([coinSequence, SKAction.run(startSpawningCoins)]), withKey: "coinSpawning")
+        }
+
+        // Start the recursive coin spawning
+        startSpawningCoins()
+
     }
 
     
