@@ -66,20 +66,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    private func scheduleSpawning() {
+    
+    private var currentObstacleDelay: TimeInterval = 5.0 // Start with 5 seconds delay
+    private var lastSpawnedObstacle: SKSpriteNode? = nil // Track the last spawned obstacle
+    private let minimumObstacleSpacing: CGFloat = 200 // Minimum horizontal spacing
 
+    private func scheduleSpawning() {
+        // Spawn obstacles
         let spawnObstacleAction = SKAction.run { [weak self] in
             guard let self = self else { return }
 
             // Use the random obstacle creation method
             let obstacle = self.createRandomObstacle()
-            obstacle.position = CGPoint(
-                x: self.frame.width + obstacle.size.width / 2, // Start offscreen on the right
-                y: self.ground.size.height + (obstacle.size.height / 2) - 25 // Align with the ground
-            )
+
+            // Calculate the new obstacle's position
+            let newObstaclePositionX = self.frame.width + obstacle.size.width / 2
+            let newObstaclePositionY = self.ground.size.height + (obstacle.size.height / 2) - 25
+
+            // Check spacing with the last spawned obstacle
+            if let lastObstacle = self.lastSpawnedObstacle {
+                let lastObstacleX = lastObstacle.position.x
+                if abs(newObstaclePositionX - lastObstacleX) < self.minimumObstacleSpacing {
+                    print("Skipped spawning to maintain minimum spacing.")
+                    return // Skip spawning if too close to the last one
+                }
+            }
+
+            // Set the new obstacle's position
+            obstacle.position = CGPoint(x: newObstaclePositionX, y: newObstaclePositionY)
             self.addChild(obstacle)
 
-            // Ensure `startMoving` works for all obstacle types
+            // Update the lastSpawnedObstacle reference
+            self.lastSpawnedObstacle = obstacle
+
+            // Start moving the obstacle
             if let movingObstacle = obstacle as? Obstacle {
                 movingObstacle.startMoving(duration: 3.0)
             } else if let movingObstacle = obstacle as? Obstacle2 {
@@ -89,22 +109,74 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
 
-        //@@@@@@@@@@@@ this what you need to change to make the game harder@@@@@@@@@@@@
-        let obstacleDelay = SKAction.wait(forDuration: 4)
-        run(SKAction.repeatForever(SKAction.sequence([spawnObstacleAction, obstacleDelay])))
+        // Recursive function to handle dynamic delay
+        func startSpawning() {
+            let spawnSequence = SKAction.sequence([
+                spawnObstacleAction,
+                SKAction.wait(forDuration: currentObstacleDelay)
+            ])
+            run(SKAction.repeatForever(spawnSequence), withKey: "obstacleSpawning")
+        }
 
-      
+        // Start the initial spawning sequence
+        startSpawning()
+
+        // Schedule dynamic adjustment of delay
+        let adjustDelayAction = SKAction.run { [weak self] in
+            guard let self = self else { return }
+            if self.currentObstacleDelay > 1.0 { // Limit to a minimum delay of 1 second
+                self.currentObstacleDelay -= 0.5
+                print("New obstacle delay: \(self.currentObstacleDelay)")
+
+                // Restart the spawning sequence with the new delay
+                self.removeAction(forKey: "obstacleSpawning")
+                startSpawning()
+            }
+        }
+
+        // Adjust delay every 30 seconds
+        let adjustDelayInterval = SKAction.wait(forDuration: 30.0)
+        let adjustDelayLoop = SKAction.repeatForever(SKAction.sequence([adjustDelayAction, adjustDelayInterval]))
+        run(adjustDelayLoop, withKey: "adjustDelay")
+    
+    
+
+        
+        func randomCoinDelay() -> TimeInterval {
+            return TimeInterval.random(in: 1.0...6.0) // Random delay
+        }
 
         let spawnCoinAction = SKAction.run { [weak self] in
+            guard let self = self else { return }
+            
             let coin = Coin()
-            coin.position = CGPoint(x: self!.frame.width + coin.size.width / 2,
-                                     y: self!.ground.size.height + coin.size.height + 60)
-            self?.addChild(coin)
+            coin.position = CGPoint(
+                x: self.frame.width + coin.size.width / 2,
+                y: self.ground.size.height + coin.size.height + 60
+            )
+            self.addChild(coin)
             coin.startMoving(duration: 4.0)
         }
-        let coinDelay = SKAction.wait(forDuration: 3.0)
-        run(SKAction.repeatForever(SKAction.sequence([spawnCoinAction, coinDelay])))
+
+        // Recursive function for random coin spawning
+        func startSpawningCoins() {
+            let randomDelay = randomCoinDelay()
+            let coinSequence = SKAction.sequence([
+                spawnCoinAction,
+                SKAction.wait(forDuration: randomDelay) // Wait for a random delay
+            ])
+            self.run(SKAction.sequence([coinSequence, SKAction.run(startSpawningCoins)]), withKey: "coinSpawning")
+        }
+
+        // Start the recursive coin spawning
+        startSpawningCoins()
+
     }
+
+    
+    
+    
+    
                                      
 
     func didBegin(_ contact: SKPhysicsContact) {
