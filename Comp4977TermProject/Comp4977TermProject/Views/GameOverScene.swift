@@ -89,6 +89,11 @@ class GameOverScene: SKScene {
     }
     
     private func addNameInputField(to view: SKView) {
+        view.subviews.forEach { subview in
+            if subview is UITextField {
+                subview.removeFromSuperview()
+            }
+        }
         // Create and configure the UITextField
         nameTextField = UITextField(frame: CGRect(x: view.frame.midX - 100, y: view.frame.midY + 20, width: 200, height: 40))
         nameTextField?.layer.zPosition = 10
